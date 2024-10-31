@@ -33,6 +33,7 @@ jobs:
           command: |
             test 
             code test
+          json: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
 
