@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: '3.8'
 
       - name: Install Poetry
         run: |
@@ -24,13 +24,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          poetry install 
+          poetry install
 
       - name: Run Snyk Code Scan
-        uses: snyk/actions/code-scan@v1.0.0
+        uses: snyk/actions/python-3.8@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
-        run: snyk code test
+      
+      - name: Run snyk
+        run: |
+          snyk test
+          snyk code test
 
       - name: Convert Snyk JSON to SARIF
         uses: garethr/snyk-to-sarif@master
