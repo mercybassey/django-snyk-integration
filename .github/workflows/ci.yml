@@ -28,13 +28,18 @@ jobs:
 
       - name: Run Snyk Code Scan
         uses: snyk/actions/python-3.8@master
+        with:
+          command: test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
+
       
-      - name: Run snyk
-        run: |
-          snyk test
-          snyk code test
+      - name: Run Snyk Code Scan2
+        uses: snyk/actions/python-3.8@master
+        with:
+          command: code test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
 
       - name: Convert Snyk JSON to SARIF
         uses: garethr/snyk-to-sarif@master
