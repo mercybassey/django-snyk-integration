@@ -1,3 +1,54 @@
+# name: Django Project CI/CD
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   snyk:
+#     runs-on: ubuntu-24.04
+
+#     steps:
+#       - name: Check out repository
+#         uses: actions/checkout@v2
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.8'
+
+#       - name: Install Poetry
+#         run: |
+#           curl -sSL https://install.python-poetry.org | python3 -
+
+#       - name: Install dependencies
+#         run: |
+#           poetry install
+
+#       - name: Run Snyk Code Scan
+#         continue-on-error: true
+#         uses: snyk/actions/python-3.8@master
+#         with:
+#           command: |
+#             test 
+#             code test
+#           # json: true
+#           args: --sarif-file-output=snyk.sarif
+#         env:
+#           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
+
+#       # - name: Convert Snyk JSON to SARIFon
+#       #   uses: garethr/snyk-to-sarif@master
+#       #   with:
+#       #     input: snyk.json
+#       #     output: snyk.sarif
+
+#       - name: Upload scan results to GitHub Code Scanning
+#         uses: github/codeql-action/upload-sarif@v3
+#         with:
+#           sarif_file: snyk.sarif
+
 name: Django Project CI/CD
 
 on:
@@ -26,26 +77,30 @@ jobs:
         run: |
           poetry install
 
-      - name: Run Snyk Code Scan
+      - name: Run Snyk Test
         continue-on-error: true
         uses: snyk/actions/python-3.8@master
         with:
-          command: |
-            test 
-            code test
-          # json: true
-          args: --sarif-file-output=snyk.sarif
+          command: test
+          args: --sarif-file-output=snyk-test.sarif
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
 
-      # - name: Convert Snyk JSON to SARIFon
-      #   uses: garethr/snyk-to-sarif@master
-      #   with:
-      #     input: snyk.json
-      #     output: snyk.sarif
+      - name: Run Snyk Code Test
+        continue-on-error: true
+        uses: snyk/actions/python-3.8@master
+        with:
+          command: code test
+          args: --sarif-file-output=snyk-code.sarif
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
 
-      - name: Upload scan results to GitHub Code Scanning
+      - name: Upload Snyk Test Results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: snyk.sarif
+          sarif_file: snyk-test.sarif
 
+      - name: Upload Snyk Code Test Results to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: snyk-code.sarif
