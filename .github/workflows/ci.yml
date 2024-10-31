@@ -82,7 +82,6 @@ jobs:
         uses: snyk/actions/python-3.8@master
         with:
           command: test
-          args: --sarif-file-output=snyk-test.sarif
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
 
