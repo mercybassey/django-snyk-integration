@@ -86,6 +86,16 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
 
+      
+      - name: Run Snyk Test
+        continue-on-error: true
+        uses: snyk/actions/python-3.8@master
+        with:
+          command: fix
+          args: --sarif-file-output=snyk-test.sarif
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
+
       - name: Run Snyk Code Test2
         continue-on-error: true
         uses: snyk/actions/python-3.8@master
