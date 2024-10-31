@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install
-          poetry run pip install snyk  # Make sure Snyk is available
+          poetry add snyk  
 
       - name: Run Snyk Code Scan
         env:
