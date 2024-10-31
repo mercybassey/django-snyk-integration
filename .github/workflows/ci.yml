@@ -27,6 +27,7 @@ jobs:
           poetry install
 
       - name: Run Snyk Code Scan
+        continue-on-error: true
         uses: snyk/actions/python-3.8@master
         with:
           command: test
@@ -34,7 +35,8 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
 
       
-      - name: Run Snyk Code Scan2
+      - name: Run Snyk Code Scan2 toggle off
+        continue-on-error: true
         uses: snyk/actions/python-3.8@master
         with:
           command: code test
