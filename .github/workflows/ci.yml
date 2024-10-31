@@ -24,14 +24,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          poetry install
-          poetry add snyk  
+          poetry install 
 
       - name: Run Snyk Code Scan
+        uses: snyk/actions/code-scan@v1.0.0
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
-        run: poetry run snyk code test
-        continue-on-error: true
+        run: snyk code test
 
       - name: Convert Snyk JSON to SARIF
         uses: garethr/snyk-to-sarif@master
