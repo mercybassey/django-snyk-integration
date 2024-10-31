@@ -37,7 +37,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
 
-      - name: Convert Snyk JSON to SARIF
+      - name: Convert Snyk JSON to SARIFon
         uses: garethr/snyk-to-sarif@master
         with:
           input: snyk.json
